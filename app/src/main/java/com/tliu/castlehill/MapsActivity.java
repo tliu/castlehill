@@ -47,6 +47,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
     private FilterState filters;
+    private Dialog areaFilterDialog;
+    private Dialog gradeFilterDialog;
+    private Dialog starFilterDialog;
 
 
     @Override
@@ -70,13 +73,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void showAreaFilter() {
 
-        final Dialog dialog = new Dialog(this);
+        areaFilterDialog.show();
 
-        dialog.setContentView(R.layout.filter_dialog);
+    }
+    private void makeAreaFilter() {
+        areaFilterDialog = new Dialog(this);
 
-        TextView tv = (TextView)dialog.findViewById(R.id.titleText);
+        areaFilterDialog.setContentView(R.layout.filter_dialog);
+
+        TextView tv = (TextView)areaFilterDialog.findViewById(R.id.titleText);
         tv.setText("Filter by Area");
-        LinearLayout lv = (LinearLayout) dialog.findViewById(R.id.areaList);
+        LinearLayout lv = (LinearLayout) areaFilterDialog.findViewById(R.id.areaList);
 
         for (String area : filters.getAreas().keySet()) {
             Switch sw = new Switch(this);
@@ -92,7 +99,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             sw.setChecked(filters.getAreas().get(area));
         }
 
-        dialog.show();
     }
 
     private void updateMarkers() {
@@ -106,16 +112,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
     private void showGradeFilter() {
 
-        final Dialog dialog = new Dialog(this);
+        gradeFilterDialog.show();
+    }
 
-        dialog.setContentView(R.layout.filter_dialog);
+    private void makeGradeFilter() {
 
-        TextView tv = (TextView)dialog.findViewById(R.id.titleText);
+        gradeFilterDialog = new Dialog(this);
+
+        gradeFilterDialog.setContentView(R.layout.filter_dialog);
+
+        TextView tv = (TextView)gradeFilterDialog.findViewById(R.id.titleText);
         tv.setText("Filter by Grade");
-        LinearLayout lv = (LinearLayout) dialog.findViewById(R.id.areaList);
+        LinearLayout lv = (LinearLayout) gradeFilterDialog.findViewById(R.id.areaList);
 
         for (Integer grade : filters.getGrades().keySet()) {
-            Log.i("GRADE: ", "" + grade);
             Switch sw = new Switch(this);
             sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -129,17 +139,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             sw.setChecked(filters.getGrades().get(grade));
         }
 
-        dialog.show();
+
     }
     private void showStarFilter() {
+        starFilterDialog.show();
 
-        final Dialog dialog = new Dialog(this);
+    }
 
-        dialog.setContentView(R.layout.filter_dialog);
+    private void makeStarFilter() {
 
-        TextView tv = (TextView)dialog.findViewById(R.id.titleText);
+        starFilterDialog = new Dialog(this);
+
+        starFilterDialog.setContentView(R.layout.filter_dialog);
+
+        TextView tv = (TextView)starFilterDialog.findViewById(R.id.titleText);
         tv.setText("Filter by Stars");
-        LinearLayout lv = (LinearLayout) dialog.findViewById(R.id.areaList);
+        LinearLayout lv = (LinearLayout) starFilterDialog.findViewById(R.id.areaList);
 
         for (Integer stars : filters.getStars().keySet()) {
             Switch sw = new Switch(this);
@@ -155,9 +170,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             sw.setChecked(filters.getStars().get(stars));
         }
 
-        dialog.show();
-
     }
+
     private void resetFilters() {
         for (String key : filters.getAreas().keySet()) {
             filters.getAreas().put(key, true);
@@ -229,6 +243,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         setUpMenu();
         enableMyLocation();
+
+        makeAreaFilter();
+        makeGradeFilter();
+        makeStarFilter();
     }
 
 

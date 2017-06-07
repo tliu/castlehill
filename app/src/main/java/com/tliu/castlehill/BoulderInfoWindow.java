@@ -38,15 +38,13 @@ class BoulderInfoWindow implements InfoWindowAdapter {
         TextView tv=(TextView)popup.findViewById(R.id.boulderDesc);
         tv.setText(marker.getSnippet());
         tv=(TextView)popup.findViewById(R.id.boulderTitle);
-        tv.setText(marker.getTitle());
+        tv.setText(marker.getTitle() + "(" + Grades.gradeToString(p.getGrade()) + ")");
         tv=(TextView)popup.findViewById(R.id.tagsView);
 
-        Log.i("WEF", "" + p.getTags().size());
         String tags = "";
         for (String s : p.getTags()) {
             tags = tags + s + ", ";
         }
-        Log.i("tags" ,tags);
         if (tags.length() > 0)
             tags = tags.substring(0, tags.length() - 2);
         tv.setText(tags);

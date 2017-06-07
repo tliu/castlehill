@@ -10,7 +10,7 @@ import java.util.List;
 public class BoulderProblem {
     private String area;
     private String name;
-    private String grade;
+    private int grade;
     private int nodeNumber;
     private int stars;
     private Marker marker;
@@ -18,7 +18,7 @@ public class BoulderProblem {
     private List<String> tags;
     private String description;
 
-    public BoulderProblem(String area, String name, String grade, int nodeNumber, int stars, LatLng coordinates, List<String> tags, String description) {
+    public BoulderProblem(String area, String name, int grade, int nodeNumber, int stars, LatLng coordinates, List<String> tags, String description) {
         this.area = area;
         this.name = name;
         this.grade = grade;
@@ -47,11 +47,11 @@ public class BoulderProblem {
         this.name = name;
     }
 
-    public String getGrade() {
+    public int getGrade() {
         return grade;
     }
 
-    public void setGrade(String grade) {
+    public void setGrade(int grade) {
         this.grade = grade;
     }
 

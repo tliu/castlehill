@@ -3,6 +3,8 @@ package com.tliu.castlehill;
 
 
 
+import android.util.Log;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.BufferedReader;
@@ -29,7 +31,8 @@ public class CSVParser {
                 int nodeNumber = Integer.parseInt(p[0].replace("|", ""));
                 String area = p[1].replace("|", "");
                 String name = p[2].replace("|", "");
-                String grade = p[3].replace("|", "");
+                String strgrade = p[3].replace("|", "");
+                int grade = Grades.stringToGrade(strgrade);
                 int stars = Integer.parseInt(p[4].replace("|", ""));
                 double lat = Double.parseDouble(p[5].replace("|", ""));
                 double lng = Double.parseDouble(p[6].replace("|", ""));

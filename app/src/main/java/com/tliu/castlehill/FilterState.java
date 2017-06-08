@@ -14,6 +14,9 @@ public class FilterState {
 
     private Map<Integer, Boolean> grades;
     private Map<Integer, Boolean> stars;
+
+
+    private String nameSearch;
     public FilterState(List<BoulderProblem> problems) {
         areas = new TreeMap<>();
         grades = new TreeMap<>();
@@ -30,6 +33,7 @@ public class FilterState {
             }
 
         }
+        nameSearch = "";
     }
     public Map<String, Boolean> getAreas() {
         return areas;
@@ -54,5 +58,13 @@ public class FilterState {
 
     public void setStars(Map<Integer, Boolean> stars) {
         this.stars = stars;
+    }
+
+    public String getNameSearch() {
+        return nameSearch;
+    }
+
+    public void setNameSearch(String nameSearch) {
+        this.nameSearch = nameSearch;
     }
 }

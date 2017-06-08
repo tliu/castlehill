@@ -11,11 +11,14 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Switch;
@@ -50,6 +53,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Dialog areaFilterDialog;
     private Dialog gradeFilterDialog;
     private Dialog starFilterDialog;
+    private Dialog nameFilterDialog;
 
 
     @Override
@@ -107,14 +111,48 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             show = filters.getAreas().get(b.getArea()) && show;
             show = filters.getGrades().get(b.getGrade()) && show;
             show = filters.getStars().get(b.getStars()) && show;
+            show = b.getName().replace("\\s+", "").toLowerCase().contains(filters.getNameSearch().toLowerCase()) && show;
             b.getMarker().setVisible(show);
         }
     }
     private void showGradeFilter() {
-
         gradeFilterDialog.show();
     }
 
+    private void showNameFilter() {
+        nameFilterDialog.show();
+    }
+    private void makeNameFilter() {
+        nameFilterDialog = new Dialog(this);
+
+        nameFilterDialog.setContentView(R.layout.filter_dialog);
+
+        TextView tv = (TextView)nameFilterDialog.findViewById(R.id.titleText);
+        tv.setText("Filter by Name");
+        LinearLayout lv = (LinearLayout) nameFilterDialog.findViewById(R.id.areaList);
+
+        EditText et = new EditText(this);
+
+        et.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                filters.setNameSearch(s.toString());
+                updateMarkers();
+            }
+        });
+        lv.addView(et);
+
+    }
     private void makeGradeFilter() {
 
         gradeFilterDialog = new Dialog(this);
@@ -144,6 +182,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void showStarFilter() {
         starFilterDialog.show();
 
+    }
+
+
+    private void filterText(String txt) {
+        for (BoulderProblem b : problems) {
+            b.getMarker().setVisible(b.getName().replace("\\s+","").toLowerCase().contains(txt.toLowerCase()));
+        }
     }
 
     private void makeStarFilter() {
@@ -184,8 +229,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         updateMarkers();
     }
+
     private void setUpMenu() {
-        String[] filterList = {"Areas", "Grades", "Stars", "Reset All"};
+        String[] filterList = {"Areas", "Grades", "Stars", "Name"};
         mDrawerList = (ListView)findViewById(R.id.left_drawer);
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, filterList);
         mDrawerList.setAdapter(mAdapter);
@@ -203,7 +249,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         showStarFilter();
                         break;
                     case 3:
-                        resetFilters();
+                        showNameFilter();
                         break;
                 }
             }
@@ -247,6 +293,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         makeAreaFilter();
         makeGradeFilter();
         makeStarFilter();
+        makeNameFilter();
     }
 
 
